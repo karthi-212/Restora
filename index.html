@@ -463,6 +463,59 @@
         color: #f43f5e;
         border-color: rgba(244, 63, 94, 0.4);
       }
+
+      .password-strength {
+        margin-top: 8px;
+      }
+
+      .strength-bar {
+        width: 100%;
+        height: 4px;
+        background: rgba(67, 47, 73, 0.1);
+        border-radius: 2px;
+        overflow: hidden;
+        margin-bottom: 6px;
+      }
+
+      .strength-fill {
+        height: 100%;
+        width: 0%;
+        transition: width 0.3s ease, background-color 0.3s ease;
+        border-radius: 2px;
+      }
+
+      .strength-fill.weak {
+        width: 33%;
+        background-color: #f43f5e;
+      }
+
+      .strength-fill.medium {
+        width: 66%;
+        background-color: #f59e0b;
+      }
+
+      .strength-fill.strong {
+        width: 100%;
+        background-color: #22c55e;
+      }
+
+      .strength-text {
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-top: 4px;
+      }
+
+      .strength-text.weak {
+        color: #f43f5e;
+      }
+
+      .strength-text.medium {
+        color: #f59e0b;
+      }
+
+      .strength-text.strong {
+        color: #22c55e;
+      }
     </style>
   </head>
   <body>
@@ -527,7 +580,7 @@
               id="email"
               name="email"
               type="email"
-              placeholder="xxx@gmail.com"
+              placeholder="Enter your email or username"
               autocomplete="email"
               required
             />
@@ -538,7 +591,7 @@
                 id="password"
                 name="password"
                 type="password"
-                placeholder="••••••••"
+                placeholder="Enter your password"
                 minlength="8"
                 autocomplete="current-password"
                 required
@@ -546,6 +599,12 @@
               <button type="button" class="password-toggle" id="passwordToggle" aria-label="Toggle password visibility">
                 <span class="eye-icon">👁️</span>
               </button>
+            </div>
+            <div id="password-strength" class="password-strength" style="display: none;">
+              <div class="strength-bar">
+                <div id="strength-fill" class="strength-fill"></div>
+              </div>
+              <div id="strength-text" class="strength-text"></div>
             </div>
             <div id="confirm-wrapper" class="confirm-wrapper" hidden>
               <label for="confirm-password">Confirm password</label>
@@ -608,11 +667,9 @@
       const helperRow = document.querySelector(".helper-row");
       const STORAGE_KEY = "RestoraUsers";
       const CURRENT_USER_KEY = "RestoraCurrentUser";
-      const DEFAULT_USER = {
-        email: "123@gmail.com",
-        password: "asdfghjkl",
-        name: "123",
-      };
+      // Admin credentials - can use username or email
+      const ADMIN_USERNAME = "admin";
+      const ADMIN_PASSWORD = "admin123456"; // Strong password for admin
       let mode = "login";
 
       // Toggle password visibility for main password field
@@ -622,6 +679,11 @@
         const eyeIcon = passwordToggle.querySelector(".eye-icon");
         eyeIcon.textContent = isPassword ? "👁️‍🗨️" : "👁️";
         passwordToggle.classList.toggle("show", isPassword);
+      });
+
+      // Add password strength checking
+      passwordInput.addEventListener("input", (e) => {
+        updatePasswordStrength(e.target.value);
       });
 
       // Toggle password visibility for confirm password field
@@ -634,37 +696,130 @@
       });
 
       const showMessage = (msg, isError = false) => {
-        messageBox.textContent = msg;
-        messageBox.classList.toggle("error", isError);
-        messageBox.style.display = "block";
-        messageBox.setAttribute("aria-live", "polite");
+        if (!messageBox) return;
+        try {
+          messageBox.textContent = msg;
+          messageBox.classList.toggle("error", isError);
+          messageBox.style.display = "block";
+          messageBox.setAttribute("aria-live", "polite");
+          
+          // Auto-hide success messages after 5 seconds
+          if (!isError) {
+            setTimeout(() => {
+              if (messageBox) {
+                messageBox.style.display = "none";
+              }
+            }, 5000);
+          }
+        } catch (e) {
+          console.error("Error showing message:", e);
+        }
       };
 
       const getUsers = () => {
         let users = [];
         try {
-          users = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-        } catch {
+          const stored = localStorage.getItem(STORAGE_KEY);
+          if (stored) {
+            users = JSON.parse(stored);
+          }
+        } catch (e) {
+          console.warn("Error loading users from localStorage:", e);
           users = [];
         }
-        if (!Array.isArray(users)) users = [];
-        // Ensure default user exists
-        if (!users.some((u) => u.email === DEFAULT_USER.email)) {
-          users.push({ ...DEFAULT_USER });
-          saveUsers(users);
+        if (!Array.isArray(users)) {
+          users = [];
         }
         return users;
       };
 
       const saveUsers = (users) => {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+        try {
+          if (!Array.isArray(users)) {
+            console.error("Invalid users array");
+            return false;
+          }
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+          return true;
+        } catch (e) {
+          console.error("Error saving users to localStorage:", e);
+          showMessage("Error saving user data. Please try again.", true);
+          return false;
+        }
+      };
+
+      // Password strength checker
+      const checkPasswordStrength = (password) => {
+        if (!password) return { strength: 0, text: "", class: "" };
+        
+        let strength = 0;
+        let feedback = [];
+
+        if (password.length >= 8) strength++;
+        else feedback.push("at least 8 characters");
+
+        if (password.length >= 12) strength++;
+
+        if (/[a-z]/.test(password)) strength++;
+        else feedback.push("lowercase letters");
+
+        if (/[A-Z]/.test(password)) strength++;
+        else feedback.push("uppercase letters");
+
+        if (/[0-9]/.test(password)) strength++;
+        else feedback.push("numbers");
+
+        if (/[^a-zA-Z0-9]/.test(password)) strength++;
+        else feedback.push("special characters");
+
+        let strengthLevel, strengthText, strengthClass;
+        if (strength <= 2) {
+          strengthLevel = "weak";
+          strengthText = "Weak password";
+          strengthClass = "weak";
+        } else if (strength <= 4) {
+          strengthLevel = "medium";
+          strengthText = "Medium password";
+          strengthClass = "medium";
+        } else {
+          strengthLevel = "strong";
+          strengthText = "Strong password";
+          strengthClass = "strong";
+        }
+
+        return { strength: strengthLevel, text: strengthText, class: strengthClass, feedback };
+      };
+
+      // Update password strength indicator
+      const updatePasswordStrength = (password) => {
+        const strengthDiv = document.getElementById("password-strength");
+        const strengthFill = document.getElementById("strength-fill");
+        const strengthText = document.getElementById("strength-text");
+
+        if (!password || password.length === 0) {
+          strengthDiv.style.display = "none";
+          return;
+        }
+
+        strengthDiv.style.display = "block";
+        const result = checkPasswordStrength(password);
+        
+        strengthFill.className = "strength-fill " + result.class;
+        strengthText.className = "strength-text " + result.class;
+        strengthText.textContent = result.text;
       };
 
       const saveCurrentUser = (user) => {
         try {
+          if (!user || typeof user !== 'object') {
+            console.error("Invalid user object");
+            return false;
+          }
           localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+          return true;
         } catch (e) {
-          console.warn("Unable to persist current user", e);
+          console.error("Error saving current user:", e);
+          return false;
         }
       };
 
@@ -704,17 +859,35 @@
 
       form.addEventListener("submit", (event) => {
         event.preventDefault();
-        const nameField = form.username ? form.username.value.trim() : "";
-        const email = form.email.value.trim().toLowerCase();
-        const password = form.password.value.trim();
-        const confirmPassword = confirmInput.value.trim();
+        
+        try {
+          const nameField = form.username ? form.username.value.trim() : "";
+          const email = form.email.value.trim().toLowerCase();
+          const password = form.password.value.trim();
+          const confirmPassword = confirmInput.value.trim();
+
+          // Input sanitization
+          if (email.length > 100 || password.length > 128 || nameField.length > 50) {
+            showMessage("Input fields are too long. Please check your entries.", true);
+            return;
+          }
 
         if (!email || !password || (mode === "signup" && (!confirmPassword || !nameField))) {
           showMessage("Please fill in all required fields.", true);
           return;
         }
 
-        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+        // Check if admin login (allows username without email format)
+        const isAdminAttempt = (
+          email.toLowerCase() === ADMIN_USERNAME || 
+          email.toLowerCase().includes(ADMIN_USERNAME) ||
+          email.toLowerCase() === "admin@gmail.com" ||
+          email.toLowerCase() === "admin@restora.com"
+        );
+
+        // For regular users and signup, validate email format
+        // Admin can login with username (no email format required)
+        if (!isAdminAttempt && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
           showMessage("Enter a valid email address.", true);
           return;
         }
@@ -724,25 +897,36 @@
           return;
         }
 
+        // For signup, check password strength
+        if (mode === "signup") {
+          const strengthResult = checkPasswordStrength(password);
+          if (strengthResult.class === "weak") {
+            showMessage("Password is too weak. Please use a stronger password.", true);
+            return;
+          }
+        }
+
         const users = getUsers();
         const existingUser = users.find((u) => u.email === email);
 
-        // Check if admin credentials first (before checking users list)
-        const isAdmin = email === "admin@gmail.com" && password === "12345678";
+        // Check if admin credentials - allow username or email (not just gmail)
+        // Admin can login with "admin" as username/email or any email containing "admin"
+        const isAdminLogin = (
+          (email.toLowerCase() === ADMIN_USERNAME || 
+           email.toLowerCase().includes(ADMIN_USERNAME) ||
+           email.toLowerCase() === "admin@gmail.com" ||
+           email.toLowerCase() === "admin@restora.com") &&
+          password === ADMIN_PASSWORD
+        );
+
         console.log("=== Login Attempt ===");
-        console.log("Email:", email);
-        console.log("Email trimmed/lowercase:", email);
-        console.log("Password entered:", password);
-        console.log("Password length:", password.length);
-        console.log("Is Admin?", isAdmin);
-        console.log("Email match:", email === "admin@gmail.com");
-        console.log("Password match:", password === "12345678");
-        console.log("Exact password check:", password === "12345678");
+        console.log("Email/Username:", email);
+        console.log("Is Admin?", isAdminLogin);
 
         if (mode === "signup") {
-          // Don't allow signup with admin email
-          if (email === "admin@gmail.com") {
-            showMessage("This email cannot be used for signup.", true);
+          // Don't allow signup with admin username/email
+          if (isAdminAttempt) {
+            showMessage("This username/email cannot be used for signup.", true);
             return;
           }
 
@@ -764,7 +948,7 @@
         }
 
         // For login mode: check admin first (bypasses user list check)
-        if (isAdmin) {
+        if (isAdminLogin) {
           // Admin login - set admin status immediately and multiple times
           console.log("✓ Admin logged in successfully!");
 
@@ -897,6 +1081,10 @@
           cta.classList.remove("pulse");
           form.reset();
         }, 1800);
+        } catch (error) {
+          console.error("Error during form submission:", error);
+          showMessage("An error occurred. Please try again.", true);
+        }
       });
     </script>
   </body>
