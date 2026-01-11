@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Restora Restraunt | Login</title>
+    <!-- Bootstrap 5 CSS for layout and form controls -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --bg-dark: #0c0b10;
+        --bg-accent: linear-gradient(135deg, #8B4513, #6B4423);
+        --card-bg: rgba(255, 255, 255, 0.92);
+        --text-dark: #1f1b2c;
+        --primary: #2e1104cc;
+        --secondary: #ffd166;
+        --success: #22c55e;
+        font-family: "Poppins", "Segoe UI", system-ui, -apple-system, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* CUSTOM BODY BACKGROUND - Optional: set a background for the entire page */
+        background: var(--bg-dark);
+        /* Or use a gradient: background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+        /* Or use an image: background: url("your-image.jpg") center/cover no-repeat; */
+        color: var(--text-dark);
+      }
+
+      .canvas {
+        position: relative;
+        width: min(1200px, 95vw);
+        margin: 40px auto;
+        border-radius: 28px;
+        overflow: hidden;
+        background: #110d14;
+        box-shadow: 0 25px 80px rgba(0, 0, 0, 0.45);
+        isolation: isolate;
+      }
+
+      @media (max-width: 768px) {
+        .canvas {
+          width: 100%;
+          margin: 0;
+          border-radius: 0;
+        }
+      }
+
+      .canvas::before,
+      .canvas::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        z-index: -2;
+        opacity: 0.35;
+      }
+
+      .canvas::before {
+        /* CUSTOM BACKGROUND - Replace with your image */
+        /* Option 1: Use an online image URL */
+        background-image: url("https://raw.githubusercontent.com/karthi-212/Restora/refs/heads/main/assests/images/background%20.png");
+        
+        /* Option 2: Use a local image file (place image in Login page folder) */
+        /* background-image: url("your-background-image.jpg"); */
+        
+        /* Option 3: Use a solid color or gradient instead */
+        /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+        /* background-image: none; */
+        
+        filter: blur(2px);
+        /* Adjust blur: 0px = no blur, 5px = more blur */
+      }
+
+      .canvas::after {
+        background: rgba(17, 13, 20, 0.75);
+        z-index: -1;
+      }
+
+      header {
+        padding: 28px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #fff7ed;
+      }
+
+      @media (max-width: 768px) {
+        header {
+          padding: 1.5rem 1rem;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 1rem;
+        }
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: clamp(1.6rem, 2vw, 2rem);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      header span {
+        display: block;
+        font-size: 0.85rem;
+        text-transform: none;
+        letter-spacing: normal;
+        opacity: 0.8;
+      }
+
+      header nav {
+        display: flex;
+        gap: 20px;
+        font-size: 0.95rem;
+      }
+
+      header nav a {
+        color: #fff;
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.3s ease;
+      }
+
+      header nav a:hover,
+      header nav a:focus-visible {
+        border-color: var(--secondary);
+      }
+
+      main {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 32px;
+        padding: 0 40px 40px;
+        align-items: stretch;
+      }
+
+      @media (max-width: 768px) {
+        main {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+          padding: 0 1rem 1.5rem;
+        }
+      }
+
+      .hero {
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-right: 10px;
+      }
+
+      .hero h2 {
+        font-size: clamp(2.2rem, 4vw, 3.4rem);
+        margin: 0 0 16px;
+      }
+
+      .hero p {
+        margin: 0 0 24px;
+        max-width: 520px;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.88);
+      }
+
+      .hero-features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 16px;
+      }
+
+      .hero-feature {
+        padding: 16px;
+        border-radius: 18px;
+        background: rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .hero-feature strong {
+        display: block;
+        color: var(--secondary);
+        font-size: 1.1rem;
+      }
+
+      .login-card {
+        background: var(--card-bg);
+        border-radius: 24px;
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+      }
+
+      @media (max-width: 768px) {
+        .login-card {
+          padding: 1.5rem;
+          border-radius: 20px;
+          gap: 1rem;
+        }
+      }
+
+      .login-card h3 {
+        margin: 0;
+        font-size: 1.8rem;
+        color: var(--text-dark);
+      }
+
+      .login-card .subtext {
+        margin: 4px 0 8px;
+        color: #6a5b72;
+        font-size: 0.95rem;
+      }
+
+      .auth-toggle {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        padding: 8px;
+        background: rgba(31, 27, 44, 0.06);
+        border-radius: 16px;
+      }
+
+      .auth-tab {
+        border: none;
+        border-radius: 12px;
+        padding: 10px 14px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        background: transparent;
+        color: #6a5b72;
+        transition: background 0.25s ease, color 0.25s ease;
+      }
+
+      .auth-tab.active {
+        background: rgba(139, 69, 19, 0.18);
+        color: var(--primary);
+      }
+
+      .login-card form {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      label {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #3a2c4a;
+      }
+
+      .password-wrapper {
+        position: relative;
+        width: 100%;
+      }
+
+      input {
+        width: 100%;
+        border-radius: 14px;
+        border: 1px solid rgba(67, 47, 73, 0.2);
+        padding: 14px 45px 14px 16px;
+        font-size: 1rem;
+        background: rgba(255, 255, 255, 0.9);
+        transition: border-color 0.25s ease, transform 0.25s ease;
+      }
+
+      .password-toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #5c4d63;
+        font-size: 1.2rem;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+        z-index: 1;
+      }
+
+      .password-toggle:hover {
+        opacity: 0.7;
+        transform: translateY(-50%) scale(1.1);
+      }
+
+      .password-toggle:active {
+        transform: translateY(-50%) scale(0.95);
+      }
+
+      .password-toggle .eye-icon {
+        display: inline-block;
+        user-select: none;
+        font-size: 1.1rem;
+        transition: transform 0.2s ease;
+      }
+
+      .password-toggle.show .eye-icon {
+        opacity: 0.8;
+      }
+
+      .password-toggle:focus-visible {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+        border-radius: 4px;
+      }
+
+      input:focus-visible {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(46, 14, 2, 0.726);
+        transform: translateY(-1px);
+      }
+
+      .cta {
+        border: none;
+        border-radius: 16px;
+        padding: 16px;
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: #fff;
+        background-image: var(--bg-accent);
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .cta::after {
+        content: "→";
+        transition: transform 0.3s ease;
+      }
+
+      .cta:hover,
+      .cta:focus-visible {
+        transform: translateY(-2px) scale(1.01);
+        box-shadow: 0 15px 35px rgba(139, 69, 19, 0.35);
+      }
+
+      .cta:hover::after,
+      .cta:focus-visible::after {
+        transform: translateX(6px);
+      }
+
+      .helper-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9rem;
+        color: #5c4d63;
+      }
+
+      .helper-row a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .confirm-wrapper[hidden] {
+        display: none !important;
+      }
+
+      .cta.pulse {
+        animation: pulse 1.2s ease;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.03);
+          box-shadow: 0 12px 30px rgba(139, 69, 19, 0.45);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .contact {
+        margin-top: 12px;
+        font-size: 0.9rem;
+        color: #5c4d63;
+      }
+
+      .contact strong {
+        color: var(--text-dark);
+      }
+
+      footer {
+        padding: 22px 40px 36px;
+        color: rgba(255, 255, 255, 0.85);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      @media (max-width: 768px) {
+        footer {
+          padding: 1.5rem 1rem;
+          flex-direction: column;
+          text-align: center;
+          gap: 1rem;
+        }
+      }
+
+      footer .social {
+        display: flex;
+        gap: 12px;
+      }
+
+      footer .social a {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        display: grid;
+        place-items: center;
+        color: #fff;
+        text-decoration: none;
+        transition: background 0.3s ease;
+      }
+
+      footer .social a:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      .message {
+        display: none;
+        padding: 12px 16px;
+        border-radius: 14px;
+        font-weight: 600;
+        background: rgba(34, 197, 94, 0.15);
+        color: var(--success);
+        border: 1px solid rgba(34, 197, 94, 0.4);
+      }
+
+      .message.error {
+        background: rgba(244, 63, 94, 0.15);
+        color: #f43f5e;
+        border-color: rgba(244, 63, 94, 0.4);
+      }
+
+      .password-strength {
+        margin-top: 8px;
+      }
+
+      .strength-bar {
+        width: 100%;
+        height: 4px;
+        background: rgba(67, 47, 73, 0.1);
+        border-radius: 2px;
+        overflow: hidden;
+        margin-bottom: 6px;
+      }
+
+      .strength-fill {
+        height: 100%;
+        width: 0%;
+        transition: width 0.3s ease, background-color 0.3s ease;
+        border-radius: 2px;
+      }
+
+      .strength-fill.weak {
+        width: 33%;
+        background-color: #f43f5e;
+      }
+
+      .strength-fill.medium {
+        width: 66%;
+        background-color: #f59e0b;
+      }
+
+      .strength-fill.strong {
+        width: 100%;
+        background-color: #22c55e;
+      }
+
+      .strength-text {
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-top: 4px;
+      }
+
+      .strength-text.weak {
+        color: #f43f5e;
+      }
+
+      .strength-text.medium {
+        color: #f59e0b;
+      }
+
+      .strength-text.strong {
+        color: #22c55e;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="canvas container-lg">
+      <header>
+        <div>
+          <h1>Restora Restarunt,Where French elegance meets unforgettable flavour!</h1>
+        </div>
+       
+      </header>
+
+      <main class="row g-4 px-3 pb-4">
+        <section class="hero col-12 col-lg-6" aria-labelledby="hero-title">
+          <p class="eyebrow">Since 1938</p>
+          <h2 id="hero-title">Login to join with Restora</h2>
+          <p>
+          French Flavours, Crafted With Heart.
+		The signature touch of Restora.
+          </p>
+         
+        </section>
+
+        <section class="login-card col-12 col-lg-6" aria-labelledby="login-heading">
+          <div>
+            <h3 id="login-heading">Welcome back!</h3>
+            <p class="subtext">
+              Sign in or create an account to customize your experience.
+            </p>
+          </div>
+          <div class="auth-toggle" role="tablist" aria-label="Authentication mode">
+            <button
+              type="button"
+              class="auth-tab active"
+              data-mode="login"
+              aria-selected="true"
+            >
+              Login
+            </button>
+            <button
+              type="button"
+              class="auth-tab"
+              data-mode="signup"
+              aria-selected="false"
+            >
+              Sign Up
+            </button>
+          </div>
+          <div id="form-message" class="message" role="alert"></div>
+          <form id="login-form" novalidate>
+            <div id="name-wrapper" class="name-wrapper" hidden>
+              <label for="username">Your name</label>
+              <input
+                id="username"
+                name="username"
+                type="text"
+                placeholder="Alex Johnson"
+                autocomplete="name"
+              />
+            </div>
+            <label for="email">Email address</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Enter your email or username"
+              autocomplete="email"
+              required
+            />
+
+            <label for="password">Password</label>
+            <div class="password-wrapper">
+              <input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Enter your password"
+                minlength="8"
+                autocomplete="current-password"
+                required
+              />
+              <button type="button" class="password-toggle" id="passwordToggle" aria-label="Toggle password visibility">
+                <span class="eye-icon">👁️</span>
+              </button>
+            </div>
+            <div id="password-strength" class="password-strength" style="display: none;">
+              <div class="strength-bar">
+                <div id="strength-fill" class="strength-fill"></div>
+              </div>
+              <div id="strength-text" class="strength-text"></div>
+            </div>
+            <div id="confirm-wrapper" class="confirm-wrapper" hidden>
+              <label for="confirm-password">Confirm password</label>
+              <div class="password-wrapper">
+                <input
+                  id="confirm-password"
+                  name="confirm-password"
+                  type="password"
+                  placeholder="Repeat your password"
+                  minlength="8"
+                  autocomplete="new-password"
+                />
+                <button type="button" class="password-toggle" id="confirmPasswordToggle" aria-label="Toggle password visibility">
+                  <span class="eye-icon">👁️</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="helper-row">
+              <label>
+                <input type="checkbox" id="remember" /> Remember me
+              </label>
+              <a href="#reset">Forgot password?</a>
+            </div>
+
+            <button class="cta" type="submit">Continue</button>
+          </form>
+          <p class="contact" id="contact">
+            <strong>Need help?</strong> restora@gmail.com · 888 222 555 ·
+            Grove Street, Los Santos
+          </p>
+        </section>
+      </main>
+
+      <footer>
+        <span>© Restora Since 1938</span>
+       
+      </footer>
+    </div>
+
+    <!-- Bootstrap JS bundle (optional, for any interactive Bootstrap components) -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      const form = document.getElementById("login-form");
+      const messageBox = document.getElementById("form-message");
+      const cta = document.querySelector(".cta");
+      const tabs = document.querySelectorAll(".auth-tab");
+      const heading = document.getElementById("login-heading");
+      const confirmWrapper = document.getElementById("confirm-wrapper");
+      const confirmInput = document.getElementById("confirm-password");
+      const passwordToggle = document.getElementById("passwordToggle");
+      const confirmPasswordToggle = document.getElementById("confirmPasswordToggle");
+      const passwordInput = document.getElementById("password");
+      const subtext = document.querySelector(".login-card .subtext");
+      const helperRow = document.querySelector(".helper-row");
+      const STORAGE_KEY = "RestoraUsers";
+      const CURRENT_USER_KEY = "RestoraCurrentUser";
+      // Admin credentials - can use username or email
+      const ADMIN_USERNAME = "admin";
+      const ADMIN_PASSWORD = "admin123456"; // Strong password for admin
+      let mode = "login";
+
+      // Toggle password visibility for main password field
+      passwordToggle.addEventListener("click", () => {
+        const isPassword = passwordInput.type === "password";
+        passwordInput.type = isPassword ? "text" : "password";
+        const eyeIcon = passwordToggle.querySelector(".eye-icon");
+        eyeIcon.textContent = isPassword ? "👁️‍🗨️" : "👁️";
+        passwordToggle.classList.toggle("show", isPassword);
+      });
+
+      // Add password strength checking
+      passwordInput.addEventListener("input", (e) => {
+        updatePasswordStrength(e.target.value);
+      });
+
+      // Toggle password visibility for confirm password field
+      confirmPasswordToggle.addEventListener("click", () => {
+        const isPassword = confirmInput.type === "password";
+        confirmInput.type = isPassword ? "text" : "password";
+        const eyeIcon = confirmPasswordToggle.querySelector(".eye-icon");
+        eyeIcon.textContent = isPassword ? "👁️‍🗨️" : "👁️";
+        confirmPasswordToggle.classList.toggle("show", isPassword);
+      });
+
+      const showMessage = (msg, isError = false) => {
+        if (!messageBox) return;
+        try {
+          messageBox.textContent = msg;
+          messageBox.classList.toggle("error", isError);
+          messageBox.style.display = "block";
+          messageBox.setAttribute("aria-live", "polite");
+          
+          // Auto-hide success messages after 5 seconds
+          if (!isError) {
+            setTimeout(() => {
+              if (messageBox) {
+                messageBox.style.display = "none";
+              }
+            }, 5000);
+          }
+        } catch (e) {
+          console.error("Error showing message:", e);
+        }
+      };
+
+      const getUsers = () => {
+        let users = [];
+        try {
+          const stored = localStorage.getItem(STORAGE_KEY);
+          if (stored) {
+            users = JSON.parse(stored);
+          }
+        } catch (e) {
+          console.warn("Error loading users from localStorage:", e);
+          users = [];
+        }
+        if (!Array.isArray(users)) {
+          users = [];
+        }
+        return users;
+      };
+
+      const saveUsers = (users) => {
+        try {
+          if (!Array.isArray(users)) {
+            console.error("Invalid users array");
+            return false;
+          }
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+          return true;
+        } catch (e) {
+          console.error("Error saving users to localStorage:", e);
+          showMessage("Error saving user data. Please try again.", true);
+          return false;
+        }
+      };
+
+      // Password strength checker
+      const checkPasswordStrength = (password) => {
+        if (!password) return { strength: 0, text: "", class: "" };
+        
+        let strength = 0;
+        let feedback = [];
+
+        if (password.length >= 8) strength++;
+        else feedback.push("at least 8 characters");
+
+        if (password.length >= 12) strength++;
+
+        if (/[a-z]/.test(password)) strength++;
+        else feedback.push("lowercase letters");
+
+        if (/[A-Z]/.test(password)) strength++;
+        else feedback.push("uppercase letters");
+
+        if (/[0-9]/.test(password)) strength++;
+        else feedback.push("numbers");
+
+        if (/[^a-zA-Z0-9]/.test(password)) strength++;
+        else feedback.push("special characters");
+
+        let strengthLevel, strengthText, strengthClass;
+        if (strength <= 2) {
+          strengthLevel = "weak";
+          strengthText = "Weak password";
+          strengthClass = "weak";
+        } else if (strength <= 4) {
+          strengthLevel = "medium";
+          strengthText = "Medium password";
+          strengthClass = "medium";
+        } else {
+          strengthLevel = "strong";
+          strengthText = "Strong password";
+          strengthClass = "strong";
+        }
+
+        return { strength: strengthLevel, text: strengthText, class: strengthClass, feedback };
+      };
+
+      // Update password strength indicator
+      const updatePasswordStrength = (password) => {
+        const strengthDiv = document.getElementById("password-strength");
+        const strengthFill = document.getElementById("strength-fill");
+        const strengthText = document.getElementById("strength-text");
+
+        if (!password || password.length === 0) {
+          strengthDiv.style.display = "none";
+          return;
+        }
+
+        strengthDiv.style.display = "block";
+        const result = checkPasswordStrength(password);
+        
+        strengthFill.className = "strength-fill " + result.class;
+        strengthText.className = "strength-text " + result.class;
+        strengthText.textContent = result.text;
+      };
+
+      const saveCurrentUser = (user) => {
+        try {
+          if (!user || typeof user !== 'object') {
+            console.error("Invalid user object");
+            return false;
+          }
+          localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+          return true;
+        } catch (e) {
+          console.error("Error saving current user:", e);
+          return false;
+        }
+      };
+
+      const setMode = (nextMode) => {
+        mode = nextMode;
+        const nameWrapper = document.getElementById("name-wrapper");
+        const nameInput = document.getElementById("username");
+        tabs.forEach((tab) => {
+          const isActive = tab.dataset.mode === mode;
+          tab.classList.toggle("active", isActive);
+          tab.setAttribute("aria-selected", String(isActive));
+        });
+
+        const isSignup = mode === "signup";
+        confirmWrapper.hidden = !isSignup;
+        confirmInput.required = isSignup;
+        if (nameWrapper && nameInput) {
+          nameWrapper.hidden = !isSignup;
+          nameInput.required = isSignup;
+          if (!isSignup) {
+            nameInput.value = "";
+          }
+        }
+        heading.textContent = isSignup ? "Join with Restora!" : "Welcome back!";
+        cta.textContent = isSignup ? "Create My Account" : "Continue";
+        helperRow.style.display = isSignup ? "none" : "flex";
+        subtext.textContent = isSignup
+          ? "Create an account to join with Restora."
+          : "Sign in or create an account to order your favourite dish online.";
+        form.reset();
+        messageBox.style.display = "none";
+      };
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => setMode(tab.dataset.mode));
+      });
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        
+        try {
+          const nameField = form.username ? form.username.value.trim() : "";
+          const email = form.email.value.trim().toLowerCase();
+          const password = form.password.value.trim();
+          const confirmPassword = confirmInput.value.trim();
+
+          // Input sanitization
+          if (email.length > 100 || password.length > 128 || nameField.length > 50) {
+            showMessage("Input fields are too long. Please check your entries.", true);
+            return;
+          }
+
+        if (!email || !password || (mode === "signup" && (!confirmPassword || !nameField))) {
+          showMessage("Please fill in all required fields.", true);
+          return;
+        }
+
+        // Check if admin login (allows username without email format)
+        const isAdminAttempt = (
+          email.toLowerCase() === ADMIN_USERNAME || 
+          email.toLowerCase().includes(ADMIN_USERNAME) ||
+          email.toLowerCase() === "admin@gmail.com" ||
+          email.toLowerCase() === "admin@restora.com"
+        );
+
+        // For regular users and signup, validate email format
+        // Admin can login with username (no email format required)
+        if (!isAdminAttempt && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+          showMessage("Enter a valid email address.", true);
+          return;
+        }
+
+        if (password.length < 8) {
+          showMessage("Password must be at least 8 characters.", true);
+          return;
+        }
+
+        // For signup, check password strength
+        if (mode === "signup") {
+          const strengthResult = checkPasswordStrength(password);
+          if (strengthResult.class === "weak") {
+            showMessage("Password is too weak. Please use a stronger password.", true);
+            return;
+          }
+        }
+
+        const users = getUsers();
+        const existingUser = users.find((u) => u.email === email);
+
+        // Check if admin credentials - allow username or email (not just gmail)
+        // Admin can login with "admin" as username/email or any email containing "admin"
+        const isAdminLogin = (
+          (email.toLowerCase() === ADMIN_USERNAME || 
+           email.toLowerCase().includes(ADMIN_USERNAME) ||
+           email.toLowerCase() === "admin@gmail.com" ||
+           email.toLowerCase() === "admin@restora.com") &&
+          password === ADMIN_PASSWORD
+        );
+
+        console.log("=== Login Attempt ===");
+        console.log("Email/Username:", email);
+        console.log("Is Admin?", isAdminLogin);
+
+        if (mode === "signup") {
+          // Don't allow signup with admin username/email
+          if (isAdminAttempt) {
+            showMessage("This username/email cannot be used for signup.", true);
+            return;
+          }
+
+          if (password !== confirmPassword) {
+            showMessage("Passwords do not match.", true);
+            return;
+          }
+
+          if (existingUser) {
+            showMessage("This email is already registered. Try logging in.", true);
+            return;
+          }
+
+          users.push({ email, password, name: nameField });
+          saveUsers(users);
+          showMessage("Account created! You can now log in.", false);
+          setTimeout(() => setMode("login"), 1200);
+          return;
+        }
+
+        // For login mode: check admin first (bypasses user list check)
+        if (isAdminLogin) {
+          // Admin login - set admin status immediately and multiple times
+          console.log("✓ Admin logged in successfully!");
+
+          // Persist current admin user for greeting/profile
+          saveCurrentUser({
+            email,
+            name: "Admin",
+            role: "admin",
+          });
+
+          // Function to set admin status with verification
+          function setAdminStatus() {
+            try {
+              localStorage.setItem("isAdmin", "true");
+              sessionStorage.setItem("isAdmin", "true");
+
+              // Verify it was set
+              const localCheck = localStorage.getItem("isAdmin");
+              const sessionCheck = sessionStorage.getItem("isAdmin");
+
+              console.log("Setting admin status...");
+              console.log("localStorage verification:", localCheck);
+              console.log("sessionStorage verification:", sessionCheck);
+
+              return localCheck === "true" && sessionCheck === "true";
+            } catch (e) {
+              console.error("Error setting admin status:", e);
+              return false;
+            }
+          }
+
+          // Set immediately
+          setAdminStatus();
+
+          showMessage("Welcome Admin! Redirecting...", false);
+
+          // Set multiple times with delays to ensure it persists
+          setTimeout(() => {
+            setAdminStatus();
+          }, 200);
+
+          setTimeout(() => {
+            setAdminStatus();
+          }, 500);
+
+          // Redirect with enough time for localStorage to persist
+          setTimeout(() => {
+            // Final set and verification before redirect
+            const verified = setAdminStatus();
+
+            if (!verified) {
+              console.error("⚠️ WARNING: Could not verify admin status was set!");
+            }
+
+            console.log("=== BEFORE REDIRECT ===");
+            console.log("Current location:", window.location.href);
+            console.log("localStorage isAdmin:", localStorage.getItem("isAdmin"));
+            console.log("sessionStorage isAdmin:", sessionStorage.getItem("isAdmin"));
+
+            // Build redirect URL - go directly to the main page
+            let redirectUrl = 'assests/main page/index.html';
+
+            console.log("Using relative redirect URL:", redirectUrl);
+
+            console.log("=== FINAL REDIRECT INFO ===");
+            console.log("Redirecting to:", redirectUrl);
+            console.log("localStorage isAdmin BEFORE redirect:", localStorage.getItem("isAdmin"));
+            console.log("sessionStorage isAdmin BEFORE redirect:", sessionStorage.getItem("isAdmin"));
+
+            // Set one final time right before redirect with verification
+            localStorage.setItem("isAdmin", "true");
+            sessionStorage.setItem("isAdmin", "true");
+
+            // Verify one last time
+            const finalCheck = localStorage.getItem("isAdmin");
+            const finalSessionCheck = sessionStorage.getItem("isAdmin");
+            console.log("Final localStorage check:", finalCheck);
+            console.log("Final sessionStorage check:", finalSessionCheck);
+
+            if (finalCheck !== "true") {
+              console.error("❌ CRITICAL ERROR: localStorage not set correctly!");
+            } else {
+              console.log("✅ localStorage verified - ready to redirect");
+            }
+
+            console.log("=== REDIRECTING NOW ===");
+
+            // Small delay to ensure localStorage is saved, then redirect
+            setTimeout(() => {
+              // Use window.location.href with relative path
+              window.location.href = redirectUrl;
+            }, 100);
+          }, 2000); // Increased delay to 2 seconds to ensure localStorage persists
+          cta.classList.add("pulse");
+          setTimeout(() => {
+            cta.classList.remove("pulse");
+            form.reset();
+          }, 1800);
+          return;
+        }
+
+        // Regular user login
+        if (!existingUser || existingUser.password !== password) {
+          showMessage("Incorrect email or password.", true);
+          return;
+        }
+
+        // Regular user - set admin status to false (clear any previous admin state)
+        localStorage.setItem("isAdmin", "false");
+        try {
+          sessionStorage.setItem("isAdmin", "false");
+        } catch (e) {
+          console.warn("Unable to clear admin status from sessionStorage", e);
+        }
+
+        // Persist current user for greeting/profile
+        const displayName = existingUser.name || email.split("@")[0];
+        saveCurrentUser({
+          email,
+          name: displayName,
+          role: "user",
+        });
+
+        showMessage("Restora Welcomes You! Redirecting...", false);
+        setTimeout(() => {
+          window.location.href = 'assests/main page/index.html';
+        }, 1000);
+        cta.classList.add("pulse");
+        setTimeout(() => {
+          cta.classList.remove("pulse");
+          form.reset();
+        }, 1800);
+        } catch (error) {
+          console.error("Error during form submission:", error);
+          showMessage("An error occurred. Please try again.", true);
+        }
+      });
+    </script>
+  </body>
+</html>
+
+

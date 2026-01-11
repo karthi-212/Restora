@@ -1,0 +1,16 @@
+{
+  "name": "restora-vercel",
+  "version": "1.0.0",
+  "description": "Restora restaurant demo site ready for Vercel deployment (static frontend + serverless API).",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18.x"
+  }
+}
+
+

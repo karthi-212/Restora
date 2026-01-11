@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Restora</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .about-hero {
+        padding: 2.5rem clamp(1rem, 5vw, 3rem);
+        width: min(1440px, calc(100% - 2rem));
+        margin: 1.5rem auto 1rem;
+        border-radius: 32px;
+        background: linear-gradient(
+          135deg,
+          rgba(44, 24, 16, 0.96),
+          rgba(15, 23, 42, 0.96)
+        );
+        box-shadow: 0 28px 60px rgba(0, 0, 0, 0.6);
+        color: #f9fafb;
+      }
+
+      .about-hero h1 {
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        font-size: clamp(2rem, 4vw, 2.8rem);
+        margin-bottom: 0.75rem;
+      }
+
+      .about-hero p {
+        max-width: 720px;
+        color: #e5e7eb;
+        font-size: 0.98rem;
+      }
+
+      .about-layout {
+        width: min(1440px, calc(100% - 2rem));
+        margin: 0 auto 3rem;
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr);
+        gap: 1.75rem;
+        padding: 0 clamp(1rem, 5vw, 3rem);
+      }
+
+      .about-card {
+        background: rgba(15, 23, 42, 0.85);
+        border-radius: 28px;
+        padding: 1.8rem 1.8rem 2rem;
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        box-shadow: 0 22px 40px rgba(15, 23, 42, 0.7);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .about-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at 10% 0%,
+          rgba(248, 250, 252, 0.08),
+          transparent 55%
+        );
+        opacity: 0.9;
+        pointer-events: none;
+      }
+
+      .about-card h2 {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #fbbf24;
+      }
+
+      .about-story {
+        position: relative;
+        z-index: 1;
+        white-space: pre-wrap;
+        line-height: 1.7;
+        font-size: 0.98rem;
+        color: #e5e7eb;
+        min-height: 160px;
+      }
+
+      .about-note {
+        margin-top: 0.75rem;
+        font-size: 0.85rem;
+        color: #9ca3af;
+      }
+
+      .about-meta {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        gap: 1rem;
+        font-size: 0.9rem;
+        color: #e5e7eb;
+      }
+
+      .about-meta strong {
+        color: #fbbf24;
+      }
+
+      .about-back {
+        margin-top: 1.5rem;
+      }
+
+      @media (max-width: 900px) {
+        .about-layout {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="about-hero">
+      <h1>About Restora</h1>
+      <p>
+      </p>
+    </header>
+
+    <main class="about-layout">
+      <section class="about-card">
+        <h2>Your Story</h2>
+        <div class="about-story">
+Restora was born from a simple belief: that French flavours become unforgettable
+when they are served with heart, warmth, and time.
+
+Established in 1938, Restora has evolved from a modest French kitchen into a premium dining destination. For over eight decades, we’ve honored the art of French cuisine—crafting refined dishes from the finest ingredients and serving them with impeccable care.
+
+Rooted in tradition and elevated by modern culinary excellence, Restora offers a timeless, luxurious taste of France.
+
+Experience elegance. Experience Restora.
+        </div>
+        <p class="about-note">
+        </p>
+      </section>
+
+      <aside class="about-card">
+        <h2>House Philosophy</h2>
+        <div class="about-meta">
+          <p><strong>Signature Line:</strong> Where French elegance meets unforgettable flavour.</p>
+          <p><strong>Founded:</strong> 1938 · Reimagined for the modern guest.</p>
+          <p><strong>Promise:</strong> Every plate, every pour, every visit should feel like a small celebration.</p>
+          <div class="about-back">
+            <a href="index.html" class="btn primary">← Back to Main Experience</a>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </body>
+  </html>
+
+
